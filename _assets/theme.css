@@ -1,0 +1,47 @@
+/* @theme marpit-theme */
+
+section {
+    font-size: 1.5rem;
+}
+
+section.first > h1 {
+    align-self: center;
+}
+
+section.first::after, section.first > header, section.first > footer {
+    color: white !important;
+}
+
+section:not(.first) {
+    justify-content: flex-start;
+}
+
+section.first > footer {
+    font-family: unset;
+    font-size: 1.2rem
+}
+
+header, footer  {
+    font-family: "Felix Titling";
+    font-size: 1rem
+}
+
+h1 {
+    color: #822433;
+}
+
+code {
+    font-family: "CascadiaCode Nerd Font";
+    tab-size: 4;
+}
+
+table {
+    align-self: center;
+}
+
+table, marp-pre {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* <!-- _backgroundColor: #822433 --> */

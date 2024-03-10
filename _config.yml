@@ -3,7 +3,7 @@ encoding: UTF-8
 include:
   - _slides
   # - _assets
-plugins:
+# plugins:
   # - jemoji
-  - jekyll-katex
-  - jekyll-last-modified-at
+  # - jekyll-katex
+  # - jekyll-last-modified-at
