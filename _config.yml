@@ -1,0 +1,9 @@
+encoding: UTF-8
+# markdown: kramdown # GMF
+include:
+  - _slides
+  # - _assets
+plugins:
+  # - jemoji
+  - jekyll-katex
+  - jekyll-last-modified-at
