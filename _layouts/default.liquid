@@ -1,14 +1,34 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title></title>
+        <title>{{ Corso di boh }}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="_assets/style.css" rel="stylesheet">
         <script async src="https://cdn.tailwindcss.com?plugins=typography"></script>
     </head>
     <body class="prose">
-        <h1>Prose</h1>
-        {{ content }}
+        <nav class="no-prose">
+            <div>
+                <img src="https://www.uniroma1.it/sites/default/files/images/logo/sapienza-big.png"
+                ><span>Intestazione perche' posso</span>
+            </div>
+            <button>test</button>
+        </nav>
+        <div class="content">
+            {{ content }}
+            {% comment %} TODO: download all button! {% endcomment %}
+            {% comment %} {{ site.slides }} {% endcomment %}
+            <ul>
+                {% for slide_deck in site.slides %}
+                    <li>
+                        {% assign basename = slide_deck.url | split: '/' | last | remove: '.html' %}
+                        <a href="_html/{{ basename }}.html" target="_blank">{{ basename }}</a>
+                        <a href="_html/{{ basename }}.pdf" target="_blank">[pdf]</a>
+                        <a href="_html/{{ basename }}.pdf" download>[download]</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </body>
 </html>

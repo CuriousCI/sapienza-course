@@ -1,4 +1,13 @@
 {
+  "scripts": {
+    "docker": "docker build -t course .  & docker run --rm --volume=\"$INIT_CWD:/srv/jekyll\" --publish 4000:4000 -a stderr -a stdout course"
+  },
+  "marp": {
+    "inputDir": "./_slides/",
+    "output": "./_html/",
+    "math": "katex",
+    "minifyCSS": true
+  },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.4.4",
     "prettier": "^3.2.5",

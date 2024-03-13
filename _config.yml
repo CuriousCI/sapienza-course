@@ -1,9 +1,14 @@
 encoding: UTF-8
-# markdown: kramdown # GMF
 include:
-  - _slides
-  # - _assets
-# plugins:
-  # - jemoji
-  # - jekyll-katex
-  # - jekyll-last-modified-at
+  - _html
+  - _assets
+collections:
+  slides:
+    output: true
+
+# - _slides
+# defaults:
+#   - scope:
+#       path: "_slides"
+#     values:
+#       slides: true
