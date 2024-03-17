@@ -1,6 +1,9 @@
 {
   "scripts": {
-    "docker": "docker build -t course .  & docker run --rm --volume=\"$INIT_CWD:/srv/jekyll\" --publish 4000:4000 -a stderr -a stdout course"
+    "marp": "marp -c package.json -w --html",
+    "tailwind": "npx tailwindcss -i ./_assets/style.css -o ./_assets/tailwind.css --watch",
+    "docker": "docker build -t course .  & docker run --rm --volume=\"$INIT_CWD:/srv/jekyll\" --publish 4000:4000 -a stderr -a stdout course",
+    "build": "npx tailwindcss -i ./_assets/style.css -o ./_assets/tailwind.css --minify"
   },
   "marp": {
     "inputDir": "./_slides/",
@@ -10,8 +13,10 @@
   },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.4.4",
+    "@tailwindcss/typography": "^0.5.10",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.12"
+    "prettier-plugin-tailwindcss": "^0.5.12",
+    "tailwindcss": "^3.4.1"
   },
   "dependencies": {
     "@marp-team/marp-core": "^3.9.0"

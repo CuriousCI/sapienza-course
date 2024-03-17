@@ -4,25 +4,50 @@
         <title>{{ Corso di boh }}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="_assets/style.css" rel="stylesheet">
-        <script async src="https://cdn.tailwindcss.com?plugins=typography"></script>
+        <link
+            rel="stylesheet"
+            href="{{ '/_assets/style.css?v=' | append: site.github.build_revision | relative_url }}"
+        >
+        <link
+            rel="stylesheet"
+            href="{{ '/_assets/tailwind.css?v=' | append: site.github.build_revision | relative_url }}"
+        >
     </head>
-    <body class="prose">
-        <nav class="no-prose">
-            <div>
-                <img src="https://www.uniroma1.it/sites/default/files/images/logo/sapienza-big.png"
-                ><span>Intestazione perche' posso</span>
-            </div>
-            <button>test</button>
+    <body class="prose m-0 max-w-full">
+        {% comment %} TODO: search icon {% endcomment %}
+        {% comment %} TODO: menu icon {% endcomment %}
+        {% comment %} TODO: pdf download link in presentation {% endcomment %}
+        {% comment %} TODO: powerpoint download link in presentation {% endcomment %}
+        {% comment %} TODO: marp safari bug {% endcomment %}
+
+        <nav class="no-prose flex items-center justify-between gap-10 px-8">
+            <img src="/_assets/sapienza-big.png" class="m-0">
+            <form class="w-full">
+                <input type="search" class="w-full">
+                {% comment %} make it small and activable with Ctrl+k like tailwindcss {% endcomment %}
+                {% comment %} then open modal? {% endcomment %}
+                {% comment %} when searching, show the line / a window of x chars in which the word appears, highlighted {% endcomment %}
+                {% comment %} maybe italian-to-english converter in text to find information{% endcomment %}
+            </form>
+            <span
+                id="desktopDarkMode"
+                class="material-symbols-outlined cursor-pointer rounded-full border border-black p-4 dark:border-white"
+                onclick="toggleDarkMode()"
+            >
+                <img src="/_assets/dark_mode.svg" class="m-0">
+            </span>
         </nav>
-        <div class="content">
+        <div class="p-4">
             {{ content }}
             {% comment %} TODO: download all button! {% endcomment %}
             {% comment %} {{ site.slides }} {% endcomment %}
+            {% comment %} TODO: tools in pages! {% endcomment %}
+            {% comment %} TODO: indicate slide in search? And use regex to do search! {% endcomment %}
             <ul>
                 {% for slide_deck in site.slides %}
                     <li>
                         {% assign basename = slide_deck.url | split: '/' | last | remove: '.html' %}
+
                         <a href="_html/{{ basename }}.html" target="_blank">{{ basename }}</a>
                         <a href="_html/{{ basename }}.pdf" target="_blank">[pdf]</a>
                         <a href="_html/{{ basename }}.pdf" download>[download]</a>
@@ -30,5 +55,54 @@
                 {% endfor %}
             </ul>
         </div>
+        {% comment %} link ad altre risorse tipo classroom / moodle etc...? {% endcomment %}
+        {% comment %} link ad altre risorse tipo classroom / moodle etc...? {% endcomment %}
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                {% comment %} Add code to searchbar! To make it search through slides, then open link to certain page! {% endcomment %}
+            });
+
+            function openNavigationDrawer() {
+                document.getElementById('navigationDrawer').showModal();
+            }
+
+            function closeNavigationDrawer() {
+                document.getElementById('navigationDrawer').close();
+            }
+
+            function setupDarkMode() {
+                const isDarkMode = JSON.parse(localStorage.getItem('darkMode'));
+                const icon = isDarkMode ? 'light_mode' : 'dark_mode';
+
+                {% comment %} const desktopDarkMode = document.getElementById('desktopDarkMode'); {% endcomment %}
+                {% comment %} const mobileDarkMode = document.getElementById('mobileDarkMode'); {% endcomment %}
+
+                const desktopIcon = document.querySelector('#desktopDarkMode > img')
+                const mobileIcon = document.querySelector('#mobileDarkMode > img')
+
+                desktopIcon.src = `/_assets/${ icon }.svg`;
+                mobileIcon.src = `/_assets/${ icon }.svg`;
+
+                document.body.classList.toggle('dark', isDarkMode);
+            }
+
+            function toggleDarkMode() {
+                document.body.classList.toggle('dark');
+                const isDarkMode = document.body.classList.contains('dark');
+
+                localStorage.setItem('darkMode', isDarkMode);
+                const icon = isDarkMode ? 'light_mode' : 'dark_mode';
+
+                const desktopIcon = document.querySelector('#desktopDarkMode > img')
+                const mobileIcon = document.querySelector('#mobileDarkMode > img')
+
+                desktopIcon.src = `/_assets/${ icon }.svg`;
+                mobileIcon.src = `/_assets/${ icon }.svg`;
+
+                window.event.stopPropagation();
+            }
+
+            document.addEventListener('DOMContentLoaded', setupDarkMode);
+        </script>
     </body>
 </html>

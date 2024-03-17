@@ -5,3 +5,4 @@ _html
 node_modules
 Gemfile
 Gemfile.lock
+_assets/tailwind.css
