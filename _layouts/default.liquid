@@ -13,39 +13,60 @@
             href="{{ '/_assets/tailwind.css?v=' | append: site.github.build_revision | relative_url }}"
         >
     </head>
-    <body class="prose m-0 max-w-full">
-        {% comment %} TODO: search icon {% endcomment %}
-        {% comment %} TODO: menu icon {% endcomment %}
+    <body class="prose m-0 max-w-full dark:fill-white">
         {% comment %} TODO: pdf download link in presentation {% endcomment %}
         {% comment %} TODO: powerpoint download link in presentation {% endcomment %}
         {% comment %} TODO: marp safari bug {% endcomment %}
 
-        <nav class="no-prose flex items-center justify-between gap-10 px-8">
+        <nav class="no-prose flex items-center justify-between gap-10 bg-gray-200 px-8 shadow-xl dark:bg-gray-800">
             <img src="/_assets/sapienza-big.png" class="m-0">
-            <form class="w-full">
-                <input type="search" class="w-full">
-                {% comment %} make it small and activable with Ctrl+k like tailwindcss {% endcomment %}
-                {% comment %} then open modal? {% endcomment %}
-                {% comment %} when searching, show the line / a window of x chars in which the word appears, highlighted {% endcomment %}
-                {% comment %} maybe italian-to-english converter in text to find information{% endcomment %}
-            </form>
+            <button
+                class="flex items-center justify-between gap-5 rounded-xl border border-gray-100 p-2 text-black shadow-sm dark:border-gray-900 dark:text-white"
+                onclick="openSearchDialog()"
+            >
+                <img src="/_assets/search.svg" class="icon m-0">
+                <span>Ricerca veloce...</span>
+                <span> <kbd>Ctrl</kbd> + <kbd>k</kbd> </span>
+            </button>
+
             <span
                 id="desktopDarkMode"
                 class="material-symbols-outlined cursor-pointer rounded-full border border-black p-4 dark:border-white"
                 onclick="toggleDarkMode()"
             >
-                <img src="/_assets/dark_mode.svg" class="m-0">
+                <img src="/_assets/dark_mode.svg" class="icon m-0">
             </span>
         </nav>
-        <div class="p-4">
+
+        {% comment %} onclick="closeSearchDialog()" {% endcomment %}
+        <dialog
+            id="search-dialog"
+            class="h-[90vh] w-[90%] overflow-hidden shadow-xl backdrop:backdrop-blur-sm dark:bg-black dark:text-white dark:shadow-2xl dark:shadow-black md:w-[70vw]"
+            onclick="closeSearchDialog()"
+        >
+            <div class="w-full">
+                <input
+                    type="text"
+                    id="search"
+                    class="border-red top-0 mb-2 h-12 w-full border-b bg-transparent px-4 py-2 text-black outline-none dark:text-white"
+                >
+            </div>
+            <div class="h-full w-full">
+                <div id="search-results" class="overflow-y-auto"></div>
+            </div>
+        </dialog>
+
+        <div class="h-full p-8 dark:prose-invert dark:bg-gray-950">
             {{ content }}
             {% comment %} TODO: download all button! {% endcomment %}
             {% comment %} {{ site.slides }} {% endcomment %}
             {% comment %} TODO: tools in pages! {% endcomment %}
             {% comment %} TODO: indicate slide in search? And use regex to do search! {% endcomment %}
+            <div id="search-results" class="bg-gray-500"></div>
             <ul>
                 {% for slide_deck in site.slides %}
                     <li>
+                        {% comment %} TODO: last modified date of each file {% endcomment %}
                         {% assign basename = slide_deck.url | split: '/' | last | remove: '.html' %}
 
                         <a href="_html/{{ basename }}.html" target="_blank">{{ basename }}</a>
@@ -55,12 +76,10 @@
                 {% endfor %}
             </ul>
         </div>
+
         {% comment %} link ad altre risorse tipo classroom / moodle etc...? {% endcomment %}
-        {% comment %} link ad altre risorse tipo classroom / moodle etc...? {% endcomment %}
+
         <script>
-            document.addEventListener('DOMContentLoaded', (event) => {
-                {% comment %} Add code to searchbar! To make it search through slides, then open link to certain page! {% endcomment %}
-            });
 
             function openNavigationDrawer() {
                 document.getElementById('navigationDrawer').showModal();
@@ -78,10 +97,10 @@
                 {% comment %} const mobileDarkMode = document.getElementById('mobileDarkMode'); {% endcomment %}
 
                 const desktopIcon = document.querySelector('#desktopDarkMode > img')
-                const mobileIcon = document.querySelector('#mobileDarkMode > img')
+                {% comment %} const mobileIcon = document.querySelector('#mobileDarkMode > img') {% endcomment %}
 
                 desktopIcon.src = `/_assets/${ icon }.svg`;
-                mobileIcon.src = `/_assets/${ icon }.svg`;
+                {% comment %} mobileIcon.src = `/_assets/${ icon }.svg`; {% endcomment %}
 
                 document.body.classList.toggle('dark', isDarkMode);
             }
@@ -94,15 +113,120 @@
                 const icon = isDarkMode ? 'light_mode' : 'dark_mode';
 
                 const desktopIcon = document.querySelector('#desktopDarkMode > img')
-                const mobileIcon = document.querySelector('#mobileDarkMode > img')
+                {% comment %} const mobileIcon = document.querySelector('#mobileDarkMode > img') {% endcomment %}
 
                 desktopIcon.src = `/_assets/${ icon }.svg`;
-                mobileIcon.src = `/_assets/${ icon }.svg`;
+                {% comment %} mobileIcon.src = `/_assets/${ icon }.svg`; {% endcomment %}
 
                 window.event.stopPropagation();
             }
 
+            function openSearchDialog() {
+                document.getElementById('search').value = '';
+                document.getElementById('search-results').innerHTML = '';
+                document.getElementById('search-dialog').showModal();
+            }
+
+            function closeSearchDialog() {
+                document.getElementById('search-dialog').close();
+            }
+
             document.addEventListener('DOMContentLoaded', setupDarkMode);
+            let ss = Object.fromEntries([
+                {% for slide in site.slides %}
+                    [`{{ slide.title | downcase }}`, new DOMParser().parseFromString(`{{ slide }}`, 'text/html')],
+                {% endfor %}
+            ]);
+
+
+            {% comment %} console.log(`{{ site.slides }}`) {% endcomment %}
+            {% comment %} console.log(`{{ site.slides }}`); {% endcomment %}
+            {% comment %} console.log(`{{ site.slides.label }}`) {% endcomment %}
+            {% comment %} console.log(`{{ site.slides.docs }}`) {% endcomment %}
+            {% comment %} console.log(`{{ site.slides.files }}`) {% endcomment %}
+            {% comment %} console.log(`{{ site.slides.relative_directory }}`) {% endcomment %}
+            {% comment %} console.log(`{{ site.slides.directory }}`) {% endcomment %}
+            {% comment %} console.log(`{{ site.slides.output }}`) {% endcomment %}
+
+            const d = new DOMParser().parseFromString(`{{ site.slides }}`, 'text/html');
+
+            function findKeyword(element, keyword, id) {
+                if (!element.id && id)
+                    element.dataset.id = id;
+                else if (element.id)
+                    element.dataset.id = id;
+
+                if (element.children.length == 0) 
+                    if (element.textContent.includes(keyword))
+                        return new Set([element.cloneNode(true)])
+
+                let result = new Set();
+
+                for (const node of element.children)
+                {
+                    if (node.id)  {
+                        id = node.id;
+                        node.dataset.id = id;
+                    } else if (id)
+                        node.dataset.id = id;
+
+                    if (node.textContent.includes(keyword)) 
+                        for (const value of findKeyword(node, keyword, id)) 
+                            result.add(value);
+                }
+
+                return result
+            }
+
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.getElementById('search').addEventListener('keyup', (event) => {
+                    event.preventDefault();
+
+                    let keyword = document.getElementById('search').value;
+
+                    let result = document.getElementById('search-results');
+                    result.innerHTML = ''
+
+                    if (keyword == '')
+                        return
+
+                    for (let [x, p] of Object.entries(ss)) {
+                        let slides = findKeyword(p.body, keyword, '');
+                        const regex = new RegExp(keyword, "gi");
+
+                        let r = document.createElement('div');
+
+                        for (const slide of slides) {
+                            slide.innerHTML = slide.innerHTML.replace(regex, "<mark>$&</mark>");
+                            let q = document.createElement('div');
+                            q.textContent = x;
+                            r.append(q, slide, document.createElement('hr'));
+                            result.append(r);
+                        }
+                    }
+                });
+            });
         </script>
     </body>
 </html>
+
+{% comment %} <form id="search-form" class="relative flex w-full justify-between gap-5"> {% endcomment %}
+{% comment %} <input {% endcomment %}
+{% comment %}     type="text" {% endcomment %}
+{% comment %}     id="search" {% endcomment %}
+{% comment %}     class="border-red absolute top-0 w-full border bg-transparent p-1 text-black" {% endcomment %}
+{% comment %} > {% endcomment %}
+
+{% comment %} <input {% endcomment %}
+{% comment %}     type="text" {% endcomment %}
+{% comment %}     id="search" {% endcomment %}
+{% comment %}     class="border-red absolute top-0 w-full border bg-transparent p-1 text-black" {% endcomment %}
+{% comment %} > {% endcomment %}
+
+{% comment %} <input type="submit" value="cerca"> {% endcomment %}
+{% comment %} make it small and activable with Ctrl+k like tailwindcss {% endcomment %}
+{% comment %} then open modal? {% endcomment %}
+{% comment %} when searching, show the line / a window of x chars in which the word appears, highlighted {% endcomment %}
+{% comment %} maybe italian-to-english converter in text to find information{% endcomment %}
+{% comment %} </form> {% endcomment %}

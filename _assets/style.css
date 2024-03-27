@@ -5,10 +5,25 @@
 
 body {
     margin: 0;
+    width: 100vw;
+    height: 100vh;
+
 }
 
 nav {
     /* background-color: #822433; */
-    background-color: #802030;
+    /* background-color: #802030; */
     color: white;
+}
+
+img.icon {
+    @apply invert-0 dark:invert; 
+}
+
+kbd {
+    @apply dark:text-gray-400;
+}
+
+div#search-results hr {
+    @apply m-2;
 }
