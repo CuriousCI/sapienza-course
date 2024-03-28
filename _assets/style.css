@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    @apply dark:prose-invert;
+}
 
 body {
     margin: 0;
     width: 100vw;
     height: 100vh;
-
 }
 
 nav {
@@ -18,10 +20,6 @@ nav {
 
 img.icon {
     @apply invert-0 dark:invert; 
-}
-
-kbd {
-    @apply dark:text-gray-400;
 }
 
 div#search-results hr {

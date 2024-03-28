@@ -6,6 +6,7 @@ collections:
   slides:
     output: true
 
+title: 'Basi di Dati I'
 # - _slides
 # defaults:
 #   - scope:

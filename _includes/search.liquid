@@ -1,0 +1,104 @@
+<dialog
+    id="search-dialog"
+    class="h-[90vh] w-[90%] overflow-hidden rounded-xl shadow-xl backdrop:backdrop-blur-sm dark:bg-black dark:text-white dark:shadow-2xl dark:shadow-black md:w-[70vw]"
+    onclick="closeSearchDialog()"
+>
+    <div class="flex w-full items-center justify-evenly border-b px-6">
+        <img src="/_assets/search.svg" class="icon m-0">
+        <input
+            type="text"
+            id="search"
+            class="top-0 h-16 w-full  bg-transparent px-6 py-2 text-black outline-none dark:text-white"
+            placeholder="Inserisci almeno 3 caratteri"
+        >
+        <kbd>Esc</kbd>
+    </div>
+    <div class="h-full w-full">
+        <div id="search-results" class="overflow-y-auto"></div>
+    </div>
+</dialog>
+
+<script>
+    function openSearchDialog() {
+        document.getElementById('search').value = '';
+        document.getElementById('search-results').innerHTML = '';
+        document.getElementById('search-dialog').showModal();
+    }
+
+    function closeSearchDialog() {
+        document.getElementById('search-dialog').close();
+    }
+
+    const slides = Object.fromEntries([
+        {% for deck in site.slides %}
+            [`{{ deck.title | downcase }}`, new DOMParser().parseFromString(`{{ deck }}`, 'text/html')],
+        {% endfor %}
+    ]);
+
+    function findKeyword(element, keyword, id) {
+        if (element.id)
+            id = element.id;
+        
+        if (id)
+            element.dataset.id = id;
+
+        const regex = new RegExp(keyword, "gi");
+        if (element.children.length == 0) 
+            if (regex.test(element.textContent))
+                return new Set([element.cloneNode(true)])
+
+        let result = new Set();
+
+        for (const node of element.children) {
+            if (node.id)  
+                id = node.id;
+
+            if (id)
+                node.dataset.id = id;
+
+            if (node.textContent.includes(keyword)) 
+                for (const value of findKeyword(node, keyword, id)) 
+                    result.add(value);
+        }
+
+        return result
+    }
+
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('search').addEventListener('keyup', (event) => {
+            event.preventDefault();
+
+            let keyword = document.getElementById('search').value;
+
+            let results = document.getElementById('search-results');
+            results.innerHTML = ''
+
+            if (keyword == '')
+                return
+
+            if (keyword.length < 3)
+                return
+
+            const regex = new RegExp(keyword, "gi");
+            for (const [title, deck] of Object.entries(slides)) {
+                let result = document.createElement('a');
+
+                for (const element of findKeyword(deck.body, keyword, '')) {
+                    element.innerHTML = element.textContent.replace(regex, "<mark>$&</mark>");
+                    result.append(element, document.createElement('hr'));
+                    result.href = `/_html/${ title }.html#${ element.dataset.id }` 
+                    {% comment %} result.target = `_blank`; {% endcomment %}
+                    results.append(result);
+                }
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && event.key === 'k') {
+            event.preventDefault();
+            openSearchDialog();
+        }
+    });
+</script>

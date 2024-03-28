@@ -1,4 +1,3 @@
-# Corso di cose belle! 
+<!-- A natale puoi fare quello che non puoi fare mai! -->
 
-<!-- Queste sono le slide! -->
-<!-- deck2pdf vs DeckTape -->
+**ATTENZIONE:** le slide sono in Inglese poiché condivise con il corso di Data Management and Analysis del CdS in Applied Computer Science and Artificial Intelligence _(ACSAI)_
