@@ -34,18 +34,31 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - name: Marp Build
+      - name: Marp Build html
+        uses: docker://marpteam/marp-cli:v1.7.0
+        with:
+          args: -c package.json --html
+        env:
+          MARP_USER: root:root
+
+      - name: Marp Build pdf
         uses: docker://marpteam/marp-cli:v1.7.0
         with:
           args: -c package.json --pdf
         env:
           MARP_USER: root:root
 
-            
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Marp Build pptx
+        uses: docker://marpteam/marp-cli:v1.7.0
         with:
-          path: ./_html
+          args: -c package.json --pptx
+        env:
+          MARP_USER: root:root
+            
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v1
+      #   with:
+      #     path: ./_html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
