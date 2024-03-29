@@ -34,7 +34,12 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - run: npm run marp
+      - name: Marp Build
+        uses: docker://marpteam/marp-cli:v1.7.0
+        with:
+          args: -c package.json --pdf --pptx
+        env:
+          MARP_USER: root:root
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
