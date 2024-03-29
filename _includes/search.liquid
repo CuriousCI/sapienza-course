@@ -36,11 +36,7 @@
     ]);
 
     function findKeyword(element, keyword, id) {
-        if (element.id)
-            id = element.id;
-        
-        if (id)
-            element.dataset.id = id;
+        element.dataset.id = id;
 
         const regex = new RegExp(keyword, "gi");
         if (element.children.length == 0) 
@@ -50,11 +46,8 @@
         let result = new Set();
 
         for (const node of element.children) {
-            if (node.id)  
-                id = node.id;
-
-            if (id)
-                node.dataset.id = id;
+            if (node.tagName == 'HR')
+                id++;
 
             if (node.textContent.includes(keyword)) 
                 for (const value of findKeyword(node, keyword, id)) 
@@ -81,17 +74,15 @@
                 return
 
             const regex = new RegExp(keyword, "gi");
-            for (const [title, deck] of Object.entries(slides)) {
-                let result = document.createElement('a');
-
-                for (const element of findKeyword(deck.body, keyword, '')) {
+            for (const [title, deck] of Object.entries(slides))
+                for (const element of findKeyword(deck.body, keyword, 1)) {
+                    let result = document.createElement('a');
                     element.innerHTML = element.textContent.replace(regex, "<mark>$&</mark>");
                     result.append(element, document.createElement('hr'));
                     result.href = `{{ site.baseurl }}/_html/${ title }.html#${ element.dataset.id }` 
                     {% comment %} result.target = `_blank`; {% endcomment %}
                     results.append(result);
                 }
-            }
         });
     });
 
@@ -102,3 +93,18 @@
         }
     });
 </script>
+
+{% comment %} id = 1 by default {% endcomment %}
+{% comment %} if we meet hr, then we increment it{% endcomment %}
+
+{% comment %} if (element.id) {% endcomment %}
+{% comment %}     id = element.id; {% endcomment %}
+
+{% comment %} if (id) {% endcomment %}
+{% comment %}     element.dataset.id = id; {% endcomment %}
+
+{% comment %} if (node.id)   {% endcomment %}
+{% comment %}     id = node.id; {% endcomment %}
+{% comment %}{% endcomment %}
+{% comment %} if (id) {% endcomment %}
+{% comment %}     node.dataset.id = id; {% endcomment %}

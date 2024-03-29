@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "marp": "marp -c package.json -w --html",
+    "marp": "marp -c package.json --theme-set ./_assets/theme.css -w --html",
     "tailwind": "npx tailwindcss -i ./_assets/style.css -o ./_assets/tailwind.css --watch",
     "docker": "docker build -t course .  & docker run --rm --volume=\"$INIT_CWD:/srv/jekyll\" --publish 4000:4000 -a stderr -a stdout course",
     "build": "npx tailwindcss -i ./_assets/style.css -o ./_assets/tailwind.css --minify"

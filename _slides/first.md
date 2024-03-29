@@ -1,9 +1,18 @@
 ---
+marp: true
+paginate: true
+footer: "**Sapienza** università di Roma, **Dipartimento di Informatica**"
 ---
+
+
 
 # This is the first slide
 
 With some text and some markdown
+
+<!-- _backgroundColor: #822433 -->
+<!-- _color: white -->
+<!-- _class: first  -->
 
 ---
 

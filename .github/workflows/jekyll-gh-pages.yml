@@ -37,28 +37,23 @@ jobs:
       - name: Marp Build html
         uses: docker://marpteam/marp-cli:v1.7.0
         with:
-          args: -c package.json --html
+          args: -c package.json --theme-set ./_assets/theme.css --html
         env:
           MARP_USER: root:root
 
       - name: Marp Build pdf
         uses: docker://marpteam/marp-cli:v1.7.0
         with:
-          args: -c package.json --pdf
+          args: -c package.json --theme-set ./_assets/theme.css  --pdf
         env:
           MARP_USER: root:root
 
       - name: Marp Build pptx
         uses: docker://marpteam/marp-cli:v1.7.0
         with:
-          args: -c package.json --pptx
+          args: -c package.json --theme-set ./_assets/theme.css  --pptx
         env:
           MARP_USER: root:root
-            
-      # - name: Upload artifact
-      #   uses: actions/upload-pages-artifact@v1
-      #   with:
-      #     path: ./_html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
