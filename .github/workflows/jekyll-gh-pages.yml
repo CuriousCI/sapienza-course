@@ -41,6 +41,12 @@ jobs:
         env:
           MARP_USER: root:root
 
+            
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./_html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Build with Jekyll
