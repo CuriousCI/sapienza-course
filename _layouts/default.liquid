@@ -34,9 +34,9 @@
                     <li>
                         {% assign basename = slide_deck.url | split: '/' | last | remove: '.html' %}
 
-                        <a href="_html/{{ basename }}.html" target="_blank">{{ basename }}</a>
-                        <a href="_html/{{ basename }}.pdf" target="_blank">[pdf]</a>
-                        <a href="_html/{{ basename }}.ppt" download>[ppt]</a>
+                        <a href="{{ site.baseurl }}/_html/{{ basename }}.html" target="_blank">{{ basename }}</a>
+                        <a href="{{ site.baseurl }}/_html/{{ basename }}.pdf" target="_blank">[pdf]</a>
+                        <a href="{{ site.baseurl }}/_html/{{ basename }}.ppt" download>[ppt]</a>
                     </li>
                 {% endfor %}
             </ul>

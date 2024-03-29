@@ -1,11 +1,10 @@
 <nav class="no-prose flex items-center justify-between gap-10 bg-gray-200 px-8 shadow-xl dark:bg-gray-800">
     <img src="/_assets/sapienza-big.png" class="-my-4 mx-0">
-    {% comment %} <img src="/_assets/sapienza.svg" class="m-0 h-20"> {% endcomment %}
     <button
         class="flex items-center justify-between gap-5 rounded-xl border border-gray-100 p-2 text-black shadow-sm dark:border-gray-900 dark:text-white"
         onclick="openSearchDialog()"
     >
-        <img src="/_assets/search.svg" class="icon m-0">
+        <img src="{{ site.baseurl }}/_assets/search.svg" class="icon m-0">
         <span>Ricerca veloce...</span>
         <span> <kbd>Ctrl</kbd> + <kbd>k</kbd> </span>
     </button>
@@ -15,7 +14,7 @@
         class="material-symbols-outlined cursor-pointer rounded-full border border-black p-4 dark:border-white"
         onclick="toggleDarkMode()"
     >
-        <img src="/_assets/dark_mode.svg" class="icon m-0">
+        <img src="{{ site.baseurl }}/_assets/dark_mode.svg" class="icon m-0">
     </span>
 </nav>
 
@@ -38,7 +37,7 @@
         const desktopIcon = document.querySelector('#desktopDarkMode > img')
         {% comment %} const mobileIcon = document.querySelector('#mobileDarkMode > img') {% endcomment %}
 
-        desktopIcon.src = `/_assets/${ icon }.svg`;
+    desktopIcon.src = `{{ site.baseurl }}/_assets/${ icon }.svg`;
         {% comment %} mobileIcon.src = `/_assets/${ icon }.svg`; {% endcomment %}
 
         document.body.classList.toggle('dark', isDarkMode);
@@ -54,7 +53,7 @@
         const desktopIcon = document.querySelector('#desktopDarkMode > img')
         {% comment %} const mobileIcon = document.querySelector('#mobileDarkMode > img') {% endcomment %}
 
-        desktopIcon.src = `/_assets/${ icon }.svg`;
+    desktopIcon.src = `{{ site.baseurl }}/_assets/${ icon }.svg`;
         {% comment %} mobileIcon.src = `/_assets/${ icon }.svg`; {% endcomment %}
 
         window.event.stopPropagation();

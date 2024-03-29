@@ -4,7 +4,7 @@
     onclick="closeSearchDialog()"
 >
     <div class="flex w-full items-center justify-evenly border-b px-6">
-        <img src="/_assets/search.svg" class="icon m-0">
+        <img src="{{ site.baseurl }}/_assets/search.svg" class="icon m-0">
         <input
             type="text"
             id="search"
@@ -87,7 +87,7 @@
                 for (const element of findKeyword(deck.body, keyword, '')) {
                     element.innerHTML = element.textContent.replace(regex, "<mark>$&</mark>");
                     result.append(element, document.createElement('hr'));
-                    result.href = `/_html/${ title }.html#${ element.dataset.id }` 
+                    result.href = `{{ site.baseurl }}/_html/${ title }.html#${ element.dataset.id }` 
                     {% comment %} result.target = `_blank`; {% endcomment %}
                     results.append(result);
                 }
